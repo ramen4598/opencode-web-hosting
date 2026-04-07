@@ -1,0 +1,25 @@
+services:
+  opencode:
+    build:
+      context: .
+      args:
+        UID: "${UID:-1000}"
+        GID: "${GID:-1000}"
+        NODE_PASSWORD: "${NODE_PASSWORD:-yourpassword}"
+    restart: unless-stopped
+
+    ports:
+      - "${PORT:-4096}:4096"
+
+    env_file:
+      - .env
+    environment:
+      HOME: /home/opencode
+      OPENCODE_SERVER_USERNAME: ${OPENCODE_USERNAME}
+      OPENCODE_SERVER_PASSWORD: ${OPENCODE_PASSWORD}
+
+    volumes:
+      - "./workspace:/workspace"
+      - "./opencode-home:/home/opencode"
+
+    working_dir: /workspace
